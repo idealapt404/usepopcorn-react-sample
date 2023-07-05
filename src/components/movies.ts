@@ -5,7 +5,13 @@ export interface MovieType {
   Poster: string;
 }
 
-export const movieData: MovieType[] = [
+export interface WatchedMovieType extends MovieType {
+  runtime: number;
+  imdbRating: number;
+  userRating: number;
+}
+
+export const initialMovieData: MovieType[] = [
   {
     imdbID: "tt1375666",
     Title: "Inception",
@@ -29,7 +35,7 @@ export const movieData: MovieType[] = [
   },
 ];
 
-const tempWatchedData = [
+export const initialWatchedData : WatchedMovieType[] = [
   {
     imdbID: "tt1375666",
     Title: "Inception",
