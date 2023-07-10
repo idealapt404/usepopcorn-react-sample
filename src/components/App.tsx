@@ -8,21 +8,10 @@ export interface MovieProps {
   movies: MovieType[];
 }
 
-export interface MainProps extends MovieProps {
-  loading: boolean;
-  error: string;
-}
-
-export interface NavBarProps extends MovieProps {
-  query: string;
-  setQuery: (query: string) => void;
-}
-
-const KEY = "6a3cec2e";
+export const KEY = "6a3cec2e";
 
 function App() {
   const [movies, setMovies] = useState(initialMovieData);
-  const [userRating, setUserRating] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("interstellar");

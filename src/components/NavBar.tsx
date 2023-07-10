@@ -1,5 +1,10 @@
 import React from 'react';
-import { MovieProps, NavBarProps } from './App';
+import { MovieProps } from './App';
+
+export interface NavBarProps extends MovieProps {
+  query: string;
+  setQuery: (query: string) => void;
+}
 
 interface SearchProps {
   query: string;

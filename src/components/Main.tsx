@@ -1,12 +1,24 @@
 import React, { ReactNode, useState } from 'react';
 import { initialWatchedData, WatchedMovieType } from './movies';
-import { MainProps } from './App';
+import { MovieProps } from './App';
+import Loader from './Loader';
 import MovieList from './MovieList';
 import WatchedSummary from './WatchedSummary';
 import WatchMoviesList from './WatchMoviesList';
+import MovieDetails from './MovieDetails';
 
 type Props = {
   children: ReactNode;
+}
+
+export interface MainProps extends MovieProps {
+  loading: boolean;
+  error: string;
+}
+
+export interface MovieActionProps {
+  selectedId: string | null;
+  setSelectedId: (id: string | null) => void;
 }
 
 export interface WatchedMovieProps {
@@ -25,17 +37,31 @@ const Main: React.FC<MainProps> = (
   }
 ) => {
   const [watched, setWatched] = useState(initialWatchedData);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   return (
     <main className="main">
       <Box>
+        {/* eslint-disable-next-line react/jsx-no-undef */}
         {loading  && <Loader />}
-        {!loading && !error && <MovieList movies={movies} />}
+        {!loading && !error &&
+          <MovieList movies={movies} selectedId={selectedId} setSelectedId={setSelectedId} />}
         {error && <ErrorMessage message={error} />}
       </Box>
       <Box>
-        <WatchedSummary watched={watched} />
-        <WatchMoviesList watched={watched} />
+        {selectedId ? (
+          <MovieDetails
+            selectedId={selectedId}
+            setSelectedId={setSelectedId}
+            watched={watched}
+            setWatched={setWatched}
+          />
+        ) : (
+          <>
+            <WatchedSummary watched={watched} />
+            <WatchMoviesList watched={watched} />
+          </>
+        )}
       </Box>
     </main>
   )
@@ -54,12 +80,6 @@ const Box: React.FC<Props> = ({children}) => {
       </button>
       {isOpen && children}
     </div>
-  )
-}
-
-const Loader: React.FC = () => {
-  return (
-    <p className="loader">Loading...</p>
   )
 }
 

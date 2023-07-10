@@ -1,10 +1,17 @@
 import React from 'react';
 import { MovieProps } from './App';
 import { MovieType } from './movies';
+import { MovieActionProps } from './Main';
 
-const MovieList: React.FC<MovieProps> = ({movies}) => {
+interface MovieListProps extends MovieProps, MovieActionProps {
+}
+
+interface MovieItemProps extends MovieType, MovieActionProps {
+}
+
+const MovieList: React.FC<MovieListProps> = ({movies, selectedId, setSelectedId}) => {
   return (
-    <ul className="list">
+    <ul className="list list-movies">
       {movies?.map((movie) => (
         <Movie
           key={movie.imdbID}
@@ -12,15 +19,26 @@ const MovieList: React.FC<MovieProps> = ({movies}) => {
           Title={movie.Title}
           Year={movie.Year}
           Poster={movie.Poster}
+          selectedId={selectedId}
+          setSelectedId={setSelectedId}
         />
       ))}
     </ul>
   )
 }
 
-const Movie: React.FC<MovieType> = ({Title, Year, Poster}) => {
+const Movie: React.FC<MovieItemProps> = (
+  {
+    imdbID,
+    Title,
+    Year,
+    Poster,
+    selectedId,
+    setSelectedId
+  }
+) => {
   return (
-    <li>
+    <li onClick={() => setSelectedId(imdbID === selectedId ? null : imdbID)}>
       <img src={Poster} alt={`${Title} poster`} />
       <h3>{Title}</h3>
       <div>
