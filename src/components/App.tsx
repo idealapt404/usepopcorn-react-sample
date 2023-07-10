@@ -13,6 +13,11 @@ export interface MainProps extends MovieProps {
   error: string;
 }
 
+export interface NavBarProps extends MovieProps {
+  query: string;
+  setQuery: (query: string) => void;
+}
+
 const KEY = "6a3cec2e";
 
 function App() {
@@ -20,9 +25,27 @@ function App() {
   const [userRating, setUserRating] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [query, setQuery] = useState("interstellar");
+
+/*
+  // watch how useEffect's dependency works
+  useEffect(() => {
+    console.log("Empty dependency -- after initial render only");
+  }, []) // sync without any state
 
   useEffect(() => {
-    let query = "interstellar";
+    console.log("No dependency -- after every render");
+  }) // sync with every state
+
+  useEffect(() => {
+    console.log("With dependency -- only when the query state is updated");
+  }, [query]) // sync with query state
+
+  console.log("During rendering");
+*/
+
+  useEffect(() => {
+    //let query = "interstellar";
     //let query = "ajsdkals";
 
     const fetchMovies = async () => {
@@ -54,13 +77,27 @@ function App() {
         setIsLoading(false);
       }
     }
+    if (query.length < 2) {
+      setMovies([]);
+      setError("");
+      return;
+    }
+
     fetchMovies();
-  }, [])
+  }, [query])
 
   return (
     <>
-      <NavBar movies={movies} />
-      <Main movies={movies} loading={isLoading} error={error} />
+      <NavBar
+        movies={movies}
+        query={query}
+        setQuery={setQuery}
+      />
+      <Main
+        movies={movies}
+        loading={isLoading}
+        error={error}
+      />
 {/*      <StarRating maxRating={6} onSetRating={setUserRating} />
       <StarRating onSetRating={setUserRating} />*/}
     </>

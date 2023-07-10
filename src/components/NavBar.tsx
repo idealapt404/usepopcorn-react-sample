@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
-import { MovieProps } from './App';
+import React from 'react';
+import { MovieProps, NavBarProps } from './App';
 
-const NavBar: React.FC<MovieProps> = ({movies}) => {
+interface SearchProps {
+  query: string;
+  setQuery: (query: string) => void;
+}
+
+const NavBar: React.FC<NavBarProps> = ({movies, query, setQuery}) => {
   return (
     <nav className="nav-bar">
       <Logo />
-      <Search />
+      <Search query={query} setQuery={setQuery} />
       <NumResult movies={movies} />
     </nav>
   );
@@ -20,9 +25,7 @@ const Logo: React.FC = () => {
   );
 }
 
-const Search: React.FC = () => {
-  const [query, setQuery] = useState("");
-
+const Search: React.FC<SearchProps> = ({query, setQuery}) => {
   return (
     <input
       className="search"

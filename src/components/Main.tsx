@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from 'react';
 import { initialWatchedData, WatchedMovieType } from './movies';
-import { MainProps, MovieProps } from './App';
+import { MainProps } from './App';
 import MovieList from './MovieList';
 import WatchedSummary from './WatchedSummary';
 import WatchMoviesList from './WatchMoviesList';
@@ -17,7 +17,13 @@ interface ErrorMessageProps {
   message: string;
 }
 
-const Main: React.FC<MainProps> = ({movies, loading, error}) => {
+const Main: React.FC<MainProps> = (
+  {
+    movies,
+    loading,
+    error,
+  }
+) => {
   const [watched, setWatched] = useState(initialWatchedData);
 
   return (
