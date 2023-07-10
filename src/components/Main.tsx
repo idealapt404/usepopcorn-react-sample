@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from 'react';
 import { initialWatchedData, WatchedMovieType } from './movies';
-import { MovieProps } from './App';
+import { MainProps, MovieProps } from './App';
 import MovieList from './MovieList';
 import WatchedSummary from './WatchedSummary';
 import WatchMoviesList from './WatchMoviesList';
@@ -13,13 +13,19 @@ export interface WatchedMovieProps {
   watched: WatchedMovieType[];
 }
 
-const Main: React.FC<MovieProps> = ({movies}) => {
+interface ErrorMessageProps {
+  message: string;
+}
+
+const Main: React.FC<MainProps> = ({movies, loading, error}) => {
   const [watched, setWatched] = useState(initialWatchedData);
 
   return (
     <main className="main">
       <Box>
-        <MovieList movies={movies} />
+        {loading  && <Loader />}
+        {!loading && !error && <MovieList movies={movies} />}
+        {error && <ErrorMessage message={error} />}
       </Box>
       <Box>
         <WatchedSummary watched={watched} />
@@ -43,6 +49,20 @@ const Box: React.FC<Props> = ({children}) => {
       {isOpen && children}
     </div>
   )
+}
+
+const Loader: React.FC = () => {
+  return (
+    <p className="loader">Loading...</p>
+  )
+}
+
+const ErrorMessage: React.FC<ErrorMessageProps> = ({message}) => {
+  return (
+    <p className="error">
+      <span>⛔️</span> {message}
+    </p>
+  );
 }
 
 export default Main;
