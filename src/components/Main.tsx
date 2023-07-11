@@ -4,7 +4,7 @@ import { MovieProps } from './App';
 import Loader from './Loader';
 import MovieList from './MovieList';
 import WatchedSummary from './WatchedSummary';
-import WatchMoviesList from './WatchMoviesList';
+import WatchedMovieList from './WatchedMovieList';
 import MovieDetails from './MovieDetails';
 
 type Props = {
@@ -59,7 +59,7 @@ const Main: React.FC<MainProps> = (
         ) : (
           <>
             <WatchedSummary watched={watched} />
-            <WatchMoviesList watched={watched} />
+            <WatchedMovieList watched={watched} setWatched={setWatched} />
           </>
         )}
       </Box>
