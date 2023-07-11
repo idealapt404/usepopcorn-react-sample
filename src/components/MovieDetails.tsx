@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { KEY } from './App';
 import Loader from './Loader';
 import { MovieActionProps } from './Main';
@@ -34,6 +34,15 @@ const MovieDetails: React.FC<MovieDetailsProps> = (
   const [movie, setMovie] = useState<DetailsType | null>(null);
   const [isDetailsLoading, setIsDetailsLoading] = useState(false);
   const [userRating, setUserRating] = useState<number | null>(null);
+
+  const countRef = useRef(0);
+
+  useEffect(() => {
+    if (userRating) {
+      countRef.current++;
+    }
+  }, [userRating]);
+
   const isWatched = selectedId
     ? watched.map((movie) => movie.imdbID).includes(selectedId)
     : false;
@@ -51,6 +60,7 @@ const MovieDetails: React.FC<MovieDetailsProps> = (
       runtime: Number(movie.Runtime.split(" ").at(0)),
       imdbRating: Number(movie.imdbRating),
       userRating: userRating ? userRating : 0,
+      countRatingDecisions: countRef.current,
     };
     setWatched([...watched, newWatchedMovie])
     setSelectedId(null);

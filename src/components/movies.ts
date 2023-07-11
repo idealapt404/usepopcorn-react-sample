@@ -9,6 +9,7 @@ export interface WatchedMovieType extends MovieType {
   runtime: number;
   imdbRating: number;
   userRating: number;
+  countRatingDecisions?: number;
 }
 
 export const initialMovieData: MovieType[] = [
