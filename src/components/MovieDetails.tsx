@@ -69,6 +69,15 @@ const MovieDetails: React.FC<MovieDetailsProps> = (
     getMovieDetails()
   }, [selectedId]);
 
+  useEffect(() => {
+    if (!movie) return;
+    document.title = `Movie: ${movie.Title}`;
+
+    return () => {
+      document.title = "usePopcorn";
+    }
+  }, [movie]);
+
   return (
     <div className="details">
       {isDetailsLoading ? (
