@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { MovieProps } from './App';
 
 export interface NavBarProps extends MovieProps {
@@ -31,6 +31,20 @@ const Logo: React.FC = () => {
 }
 
 const Search: React.FC<SearchProps> = ({query, setQuery}) => {
+  const inputElement = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    const callback = (e: KeyboardEvent) => {
+      if (!inputElement || document.activeElement === inputElement.current) return;
+      if (e.code === "Enter") {
+        inputElement.current?.focus();
+        setQuery("");
+      }
+    }
+    document.addEventListener("keydown", callback);
+    return () => document.addEventListener("keydown", callback);
+  }, [setQuery]);
+
   return (
     <input
       className="search"
@@ -38,6 +52,7 @@ const Search: React.FC<SearchProps> = ({query, setQuery}) => {
       placeholder="Search movies..."
       value={query}
       onChange={(e) => setQuery(e.target.value)}
+      ref={inputElement}
     />
   );
 }
