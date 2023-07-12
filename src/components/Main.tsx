@@ -1,11 +1,12 @@
 import React, { ReactNode, useState } from 'react';
-import { initialWatchedData, WatchedMovieType } from './movies';
+import { WatchedMovieType } from './movies';
 import { MovieProps } from './App';
 import Loader from './Loader';
 import MovieList from './MovieList';
 import WatchedSummary from './WatchedSummary';
 import WatchedMovieList from './WatchedMovieList';
 import MovieDetails from './MovieDetails';
+import { useLocalStorageState } from '../hooks/use-local-storage-state';
 
 type Props = {
   children: ReactNode;
@@ -36,7 +37,7 @@ const Main: React.FC<MainProps> = (
     error,
   }
 ) => {
-  const [watched, setWatched] = useState(initialWatchedData);
+  const { watched, setWatched}  = useLocalStorageState("watched");
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   return (
