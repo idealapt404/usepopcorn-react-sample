@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { MovieProps } from './App';
+import { useKey } from '../hooks/use-key';
 
 export interface NavBarProps extends MovieProps {
   query: string;
@@ -33,17 +34,11 @@ const Logo: React.FC = () => {
 const Search: React.FC<SearchProps> = ({query, setQuery}) => {
   const inputElement = useRef<HTMLInputElement | null>(null);
 
-  useEffect(() => {
-    const callback = (e: KeyboardEvent) => {
-      if (!inputElement || document.activeElement === inputElement.current) return;
-      if (e.code === "Enter") {
-        inputElement.current?.focus();
-        setQuery("");
-      }
-    }
-    document.addEventListener("keydown", callback);
-    return () => document.addEventListener("keydown", callback);
-  }, [setQuery]);
+  useKey("Enter", () => {
+    if (!inputElement || document.activeElement === inputElement.current) return;
+    inputElement.current?.focus();
+    setQuery("");
+  });
 
   return (
     <input

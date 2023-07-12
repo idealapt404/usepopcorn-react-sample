@@ -4,6 +4,7 @@ import Loader from './Loader';
 import { MovieActionProps } from './Main';
 import { WatchedMovieType } from './movies';
 import StarRating from './StarRating';
+import { useKey } from '../hooks/use-key';
 
 interface DetailsType {
   Title: string;
@@ -65,6 +66,8 @@ const MovieDetails: React.FC<MovieDetailsProps> = (
     setWatched([...watched, newWatchedMovie])
     setSelectedId(null);
   }
+
+  useKey("Escape", () => setSelectedId(null));
 
   useEffect(() => {
     const getMovieDetails = async () => {
