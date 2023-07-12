@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import NavBar from './NavBar';
 import Main from './Main';
-import { initialMovieData, MovieType } from './movies';
-//import StarRating from './StarRating';
+import { MovieType } from './movies';
+import { useMovies } from '../hooks/use-movies';
 
 export interface MovieProps {
   movies: MovieType[];
@@ -11,10 +11,8 @@ export interface MovieProps {
 export const KEY = "6a3cec2e";
 
 function App() {
-  const [movies, setMovies] = useState(initialMovieData);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
   const [query, setQuery] = useState("interstellar");
+  const { movies, isLoading, error } = useMovies(query);
 
 /*
   // watch how useEffect's dependency works
@@ -32,48 +30,6 @@ function App() {
 
   console.log("During rendering");
 */
-
-  useEffect(() => {
-    //let query = "interstellar";
-    //let query = "ajsdkals";
-
-    const fetchMovies = async () => {
-      try {
-        setIsLoading(true);
-        setError("");
-
-        const res = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=${query}`);
-        if (!res.ok) {
-          throw new Error("Something went wrong with fetching movies");
-        }
-        const data = await res.json();
-        if (data.Response === "False") {
-          throw new Error("Movie not found");
-        }
-        setMovies(data.Search);
-        setError("");
-      } catch (err: any) {
-        if (err instanceof Error) {
-          setError(err.message);
-          console.log(err.message);
-        } else if (typeof err === "string") {
-          setError(err);
-          console.log(err);
-        } else {
-          console.log(err);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    if (query.length < 2) {
-      setMovies([]);
-      setError("");
-      return;
-    }
-
-    fetchMovies();
-  }, [query])
 
   return (
     <>
